@@ -167,3 +167,8 @@ body {
   }
 }
 
+.fade {
+  opacity: 25%;
+  border: 2px #747bff dotted;
+}
+
