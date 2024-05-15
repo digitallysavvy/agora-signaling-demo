@@ -1,6 +1,8 @@
 # agora-signaling-demo
 An example of how to implement that Agora Signaling SDK for Web v 2.9.1 using vanilla javascript
 
+A walk-through of the project setup and code: [GUIDE.md](GUIDE.md)
+
 ## Demo
 ![build deploy to pages workflow](https://github.com/digitallysavvy/agora-signaling-demo/actions/workflows/deploy-to-pages.yaml/badge.svg)
 
