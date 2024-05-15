@@ -144,6 +144,10 @@ const handlePresenceEvent = (eventArgs) => {
       const user = userList[userIndex]
       addDiv(user.userId)
     }
+  } else if (eventType == 'REMOTE_JOIN') {
+    // if a remote user joins the channel, check if their div already exists
+    if (!document.getElementById(publisher))
+      addDiv(publisher)
   }
 }
 
