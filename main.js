@@ -1,30 +1,16 @@
 import './style.css'
 
 const contianer = document.getElementById('container')
-let divCount = 0
-
-// document.body.addEventListener('keydown', event => {
-//   console.log(`key: ${event.code}`)
-//   if (event.code == 'Space')
-//     addDiv(divCount)
-// })
-
-// document.body.addEventListener('click', event => {
-//   const div = event.target
-//   if (parseInt(div.id) % 2 == 0) {
-//     addWiggleAnimation(div)
-//   } else {
-//     addMorphAnimation(div)
-//   }
-  
-// })
 
 export const addDiv = (id) => {
-  console.log(`create div: ${id}`)
+  // return early if div exists 
+  if (document.getElementById(id)) return
+  
+  // create div
   const div = document.createElement('div')
   div.className = 'user'
   div.id = id
-  div.textContent = `0x${id}${++divCount}` // replace with Id
+  div.textContent = `0x${id}` // replace with Id
 
   // create random background color
   const hue = Math.random() * 360
@@ -41,9 +27,17 @@ export const addDiv = (id) => {
   adjustGrid()
 }
 
+export const removeDiv = async (id) => {
+  const div = document.getElementById(id)
+  if (div) {
+    div.remove()
+    adjustGrid()
+  }
+}
+
 const adjustGrid = () => {
   const divs = contianer.querySelectorAll('.user')
-  const numDivs = divs.length
+  const numDivs = divs.length > 0 ? divs.length : 1
   let cols = Math.ceil(Math.sqrt(numDivs))
   let rows = Math.ceil(numDivs/cols)
 
@@ -81,5 +75,26 @@ export const addFade = (div, duration) => {
     setTimeout(() => {
       div.classList.remove('fade')
     }, duration)
+  }
+}
+
+export const emptyContainer = async () => {
+  contianer.replaceChildren([])
+  adjustGrid()
+}
+
+export const addJoinButton = async () => {
+  const button = document.createElement('button')
+  button.id = 'join-channel'
+  button.textContent = 'Join'
+  container.appendChild(button)
+
+  return button
+}
+
+export const removeJoinButton = () => {
+  const button = document.getElementById('join-channel')
+  if (button) {
+    button.remove()
   }
 }

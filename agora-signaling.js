@@ -1,5 +1,13 @@
 import AgoraRTM from "agora-rtm-sdk"
-import { addDiv, addWiggleAnimation, addMorphAnimation, addFade } from "./main"
+import { 
+  addDiv, 
+  removeDiv,
+  addWiggleAnimation, 
+  addMorphAnimation, 
+  addFade, 
+  addJoinButton, 
+  removeJoinButton, 
+  emptyContainer } from "./main"
 
 // Config set up
 const appId = import.meta.env.VITE_AGORA_APP_ID
@@ -42,18 +50,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // Subscribe to a channel
   const channelName = 'test'
-  try {
-    const subscribeOptions = {
-      withMessage: true,
-      withPresence: true,
-      withMetadata: true,
-      withLock: true,
-    }
-    await client.subscribe(channelName, subscribeOptions)
-    // once user joins the 'presence' event will be triggered
-  } catch (error) {
-    console.warn(error)
-  }
+
+
+  addJoin(client, channelName)
 
   // add click event listenter
   document.body.addEventListener('click', event => {
@@ -72,6 +71,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   document.body.addEventListener('keydown', event => {
     console.log(`key: ${event.code}`)
+
     // space bar event
     if (event.code == 'Space') {
       // fade the div locally, & send a message using RTM
@@ -83,8 +83,42 @@ document.addEventListener('DOMContentLoaded', async () => {
       // Send the message into the chanel
       client.publish(channelName, message)
     }
+
+    // Leave the channel on esc
+    if (event.code == 'Escape') {
+      leave(client, channelName)
+    }
   })
 })
+
+const addJoin = async (client,channelName) => {
+  const joinBtn = await addJoinButton()
+  joinBtn.addEventListener('click', async (event) => {
+    // prevent the click from "bubbling up"
+    event.stopPropagation() 
+
+    try {
+      // set which types of messages you want to subscribe to
+      const subscribeOptions = {
+        withMessage: true,
+        withPresence: true,
+        withMetadata: false,
+        withLock: false,
+      }
+      await client.subscribe(channelName, subscribeOptions)
+      // once user joins the 'presence' event will be triggered
+      removeJoinButton() // remove the join button
+    } catch (error) {
+      console.warn(error)
+    }
+  })
+}
+
+const leave = async (client,channelName) => {
+  client.unsubscribe(channelName)
+  await emptyContainer()
+  addJoin(client,channelName)
+}
 
 // Add Event Listeners
 const addAgoraSignalingEventListeners = (client) => {
@@ -145,9 +179,9 @@ const handlePresenceEvent = (eventArgs) => {
       addDiv(user.userId)
     }
   } else if (eventType == 'REMOTE_JOIN') {
-    // if a remote user joins the channel, check if their div already exists
-    if (!document.getElementById(publisher))
-      addDiv(publisher)
+    addDiv(publisher)
+  } else if (eventType === 'REMOTE_LEAVE') {
+    removeDiv(publisher)
   }
 }
 
@@ -171,7 +205,7 @@ const handleMessageEvent = (eventArgs) => {
 // Utility
 const getToken = async (uid, expiration = 3600) => {
   // Token-Server using: AgoraIO-Community/agora-token-service
-  const tokenServerURL = import.meta.env.VITE_AGORA_TOKEN_SERVER_URL + 'getToken' ?? 'http://localhost:8080/getToken'
+  const tokenServerURL = import.meta.env.VITE_AGORA_TOKEN_SERVER_URL + 'getToken'
   const tokenRequest = {
     "tokenType": "rtm",
     "uid": uid,
