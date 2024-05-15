@@ -7,7 +7,7 @@ import {
   addFade, 
   addJoinButton, 
   removeJoinButton, 
-  emptyContainer } from "./main"
+  emptyContainer } from "./ui"
 
 // Config set up
 const appId = import.meta.env.VITE_AGORA_APP_ID
@@ -42,16 +42,15 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Login to Agora
   try {
     const loginTimestamp = await client.login()
-    console.log(loginTimestamp)
     console.log(`Signaling login success @ ${JSON.stringify(loginTimestamp)}`)
   } catch (error) {
     console.log(`Signaling Error: ${error}`)
   }
 
-  // Subscribe to a channel
+  // Set the name for the channel to subscribe to
   const channelName = 'test'
 
-
+  // Add the join button and listener
   addJoin(client, channelName)
 
   // add click event listenter
@@ -70,8 +69,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   })
 
   document.body.addEventListener('keydown', event => {
-    console.log(`key: ${event.code}`)
-
     // space bar event
     if (event.code == 'Space') {
       // fade the div locally, & send a message using RTM
@@ -91,6 +88,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   })
 })
 
+// add the <button /> and subscribe logic
 const addJoin = async (client,channelName) => {
   const joinBtn = await addJoinButton()
   joinBtn.addEventListener('click', async (event) => {
@@ -114,58 +112,53 @@ const addJoin = async (client,channelName) => {
   })
 }
 
+// handle leaving the channel and cleaning up the ui
 const leave = async (client,channelName) => {
-  client.unsubscribe(channelName)
-  await emptyContainer()
-  addJoin(client,channelName)
+  client.unsubscribe(channelName)   // unsubcribe from the channel
+  await emptyContainer()            // clear the container div contents
+  addJoin(client,channelName)       // add the join button 
 }
 
 // Add Event Listeners
 const addAgoraSignalingEventListeners = (client) => {
-
+  // message events
   client.addEventListener('message', eventArgs => {
     console.log(`message event:`)
     console.log(eventArgs)
     handleMessageEvent(eventArgs)
   })
-
+  // status events
   client.addEventListener('status', eventArgs => {
     console.log(`status event:`)
     console.log(eventArgs)    
   })
-
+  // presence events
   client.addEventListener('presence', eventArgs => {
     console.log(`presence event:`)
     console.log(eventArgs) 
     handlePresenceEvent(eventArgs)   
   })
-
+  // storage events
   client.addEventListener('storage', eventArgs => {
     console.log(`storage event:`)
     console.log(eventArgs)    
   })
-
+  // topic events
   client.addEventListener('topic', eventArgs => {
     console.log(`topic event:`)
     console.log(eventArgs)    
   })
-
+  // lock events
   client.addEventListener('lock', eventArgs => {
     console.log(`lock event:`)
     console.log(eventArgs)    
   })
-
+  // token expire event
   client.addEventListener('TokenPriviledgeWillExpire', eventArgs => {
     console.log(`Token Priviledge Will Expire event:`)
     console.log(eventArgs)    
-    // TODO add support to fetch new token and apply
-    renewToken()
+    renewToken(client, channelName) // fetch and renew token
   })
-}
-
-const renewToken = async (channelName) => {
-  const newToken = await getToken(userId, channelName)
-  client.renewToken(newToken, { channelName: channelName})
 }
 
 const handlePresenceEvent = (eventArgs) => {
@@ -185,6 +178,7 @@ const handlePresenceEvent = (eventArgs) => {
   }
 }
 
+// parse the message event and apply animation
 const handleMessageEvent = (eventArgs) => {
   const {messageType, publisher, message: messagePayload, publishTime} = eventArgs
   if (messageType === 'STRING') {
@@ -200,33 +194,6 @@ const handleMessageEvent = (eventArgs) => {
     }
   }
 
-}
-
-// Utility
-const getToken = async (uid, expiration = 3600) => {
-  // Token-Server using: AgoraIO-Community/agora-token-service
-  const tokenServerURL = import.meta.env.VITE_AGORA_TOKEN_SERVER_URL + 'getToken'
-  const tokenRequest = {
-    "tokenType": "rtm",
-    "uid": uid,
-    // "channel": channelName, // optional: passing channel gives streamchannel. wildcard "*" is an option.
-    "expire": expiration // optional: expiration time in seconds (default: 3600)
-  }
-
-  try {
-    const tokenFetchResposne = await fetch(tokenServerURL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      }, 
-      body: JSON.stringify(tokenRequest)
-    })
-    const data = await tokenFetchResposne.json()
-    return data.token
-
-  } catch (error) {
-    console.log(`fetch error: ${error}`)
-  }
 }
 
 // Generate unique ID
@@ -260,4 +227,37 @@ const getCanvasDetail = () => {
   ctx.fillStyle = 'rgba(102, 204, 0, 0.7'
   ctx.fillText('Agora', 4, 17)
   return canvas.toDataURL()
+}
+
+// Fetch a token from the token server
+const getToken = async (uid, expiration = 3600) => {
+  // Token-Server using: AgoraIO-Community/agora-token-service
+  const tokenServerURL = import.meta.env.VITE_AGORA_TOKEN_SERVER_URL + 'getToken'
+  const tokenRequest = {
+    "tokenType": "rtm",
+    "uid": uid,
+    // "channel": channelName, // optional: passing channel gives streamchannel. wildcard "*" is an option.
+    "expire": expiration // optional: expiration time in seconds (default: 3600)
+  }
+
+  try {
+    const tokenFetchResposne = await fetch(tokenServerURL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      }, 
+      body: JSON.stringify(tokenRequest)
+    })
+    const data = await tokenFetchResposne.json()
+    return data.token
+
+  } catch (error) {
+    console.log(`fetch error: ${error}`)
+  }
+}
+
+// fetch a new token and update the client
+const renewToken = async (client, channelName) => {
+  const newToken = await getToken(userId, channelName)
+  client.renewToken(newToken, { channelName: channelName})
 }
