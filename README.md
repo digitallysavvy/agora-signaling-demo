@@ -10,8 +10,11 @@ Test the build: [https://digitallysavvy.github.io/agora-signaling-demo/](https:/
 
 ## Setup
 1. Clone the repo
-2. Rename `.env-example` file to `.env`
-3. Add Agora API Key to the .env file
+2. Copy `.env-example` file and rename to `.env`
+```bash
+cp .env.example .env
+```
+3. Set the APP_ID, and TOKEN_SERVER env variables in the .env file
 
 ## Test in Dev mode
 1. Follow steps in setup
@@ -31,7 +34,7 @@ Test the build: [https://digitallysavvy.github.io/agora-signaling-demo/](https:/
 This project is setup with a GitHub actions workflow to deploy the project to GitHub pages, if enabled in the project settings. 
 
 To enable GitHub Pages build via GitHub Actions:
-1. Clone or Fork the project (https://github.com/digitallysavvy/group-live-stream)
+1. Clone or Fork the project (https://github.com/digitallysavvy/agora-signaling-demo/)
 3. Click the project's Settings tab
 4. Click the Pages tab in the left column menu
 5. Under Build and deployment, select GitHub Actions as the Source
@@ -39,4 +42,5 @@ To enable GitHub Pages build via GitHub Actions:
 7. Click github-pages from the Environments list
 8. Click Add variable under the Environment variable section
 9. Set the name `VITE_AGORA_APP_ID` and your Agora AppId as the value.
-10. Update the `vit.config.js` file to update the url if you change the project name
+10. Repeat step 8 and add `VITE_AGORA_TOKEN_SERVER_URL` and the url to your [agora token service](https://github.com/AgoraIO-Community/agora-token-service) url.
+10. (optional) If you used a different name for your github repo, update the `vit.config.js` file to update the url if you change the project name
