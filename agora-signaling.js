@@ -167,7 +167,7 @@ const handleMessageEvent = (eventArgs) => {
 // Utility
 const getToken = async (uid, expiration = 3600) => {
   // Token-Server using: AgoraIO-Community/agora-token-service
-  const tokenServerURL = import.meta.env.VITE_AGORA_TOKEN_SERVER_URL ?? 'http://localhost:8080/getToken'
+  const tokenServerURL = import.meta.env.VITE_AGORA_TOKEN_SERVER_URL + 'getToken' ?? 'http://localhost:8080/getToken'
   const tokenRequest = {
     "tokenType": "rtm",
     "uid": uid,
