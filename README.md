@@ -1,5 +1,10 @@
 # agora-signaling-demo
-An example of how to implement that Agora Signaling SDK for Web.
+An example of how to implement that Agora Signaling SDK for Web v 2.9.1 using vanilla javascript
+
+## Demo
+![build deploy to pages workflow](https://github.com/digitallysavvy/agora-signaling-demo/actions/workflows/deploy-to-pages.yaml/badge.svg)
+
+Test the build: [https://digitallysavvy.github.io/agora-signaling-demo/](https://digitallysavvy.github.io/agora-signaling-demo/)
 
 ## Setup
 1. Clone the repo
@@ -19,3 +24,17 @@ An example of how to implement that Agora Signaling SDK for Web.
 ```npm run build```
 4. Upload the contents of the new `dist` folder to your webserver
 5. Make sure the server has your Agora API key set in the environment variables using the env variable `VITE_AGORA_APP_ID=`
+
+## Deploy to GitHub Pages
+This project is setup with a GitHub actions workflow to deploy the project to GitHub pages, if enabled in the project settings. 
+
+To enable GitHub Pages build via GitHub Actions:
+1. Clone or Fork the project (https://github.com/digitallysavvy/group-live-stream)
+3. Click the project's Settings tab
+4. Click the Pages tab in the left column menu
+5. Under Build and deployment, select GitHub Actions as the Source
+6. Click the Environments tab in the left column menu
+7. Click github-pages from the Environments list
+8. Click Add variable under the Environment variable section
+9. Set the name `VITE_AGORA_APP_ID` and your Agora AppId as the value.
+10. Update the `vit.config.js` file to update the url if you change the project name
