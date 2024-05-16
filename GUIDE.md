@@ -252,7 +252,7 @@ The [`ui.js`](ui.js) imports the `style.css`, defines functions for dynamically 
 
 ## Agora Signaling
 
-The [Agora Signaling SDK](hhttps://www.agora.io/en/products/signaling/) simplifies the development process for building real-time signaling solutions that scale with your web applications. The Agora Signaling SDK is straightforward in how it works: you initialize the SDK by creating a `client`, use that client to `subscribe` to a `channel`. Once in a `channel` use the `client` to publish messages into the channel, for all other users in the channel to receive. 
+The [Agora Signaling SDK](hhttps://www.agora.io/en/products/signaling/) simplifies the development process for building real-time signaling solutions that scale with your web applications. The Agora Signaling SDK is straightforward in how it works: you initialize the SDK by creating a `client`, and use that client to `subscribe` to a `channel`. Once in a `channel` use the `client` to publish messages into the channel, for all other users in the channel to receive. 
 
 To implement the Agora Signaling SDK, create a new file [`agora-signaling.js`](agora-signaling.js) and import the `AgoraRTM` object from `agora-rtm-sdk`. Then we'll import each of the `exports` from [`ui.js`](ui.js). 
 
@@ -266,11 +266,11 @@ Once we have a unique `userId`, we can fetch a token for that UID, update the `r
 
 > For more information about the event details, see the [Event Listeners section of the Agora Signaling API documentation](https://docs.agora.io/en/signaling/reference/api?platform=web#event-listeners).
 
-After we've added the listeners, we can use the `client` to connect to the Agora network using `login()`. Once the client is logged in, we can add the 'Join' `<button />` element so users can subscribe to the channel.
+After we've added the listeners, we can use the `client` to connect to the Agora network using `login()`. Once the client is logged in, we can add the 'Join' `<button/>` element so users can subscribe to the channel.
 
-Once users join a channel, we'll remove the 'Join' `<button />` element and let the `presence` event callback we set earlier handle filling the container with the `<div />` elements representing the users in the channel.
+Once users join a channel, we'll remove the 'Join' `<button/>` element and let the `presence` event callback we set earlier handle filling the container with the `<div/>` elements representing the users in the channel.
 
-We'll add some event listeners for clicking on divs and tapping the space bar. When the local user triggers either of those events, we'll create a message and publish it to the channel using the `client`. When the other users in the channel receive the `message` event, we'll parse the `message` payload and update the UI to either wiggle a div or scale it using the functions from [`ui.js`](ui.js).
+We'll add some listeners  for user click and keyboard events. When the local user taps the space bar or clicks on a `<div/>`, we'll create a message and publish it to the channel using the `client`. When the other users in the channel receive the `message` event, we'll parse the `message` payload and update the UI to either wiggle a div or scale it using the functions from [`ui.js`](ui.js).
 
 We'll also include a listener for the `Escape` key, so users can `unsubscribe` from the channel. This will also clear the container and display the 'Join' `<button />`.
 
@@ -548,12 +548,12 @@ npm run dev
 ```
 Once the server is running we can open multiple browsers and join the same channel to simulate multiple users in the channel and test out the code. 
 
-If you want to test with multiple devices you'll need a way to run the project with a secure `https` connection. You have two options: setup a custom SSL certificate for your local device; or use a service like [ngrok](https://ngrok.com), which creates a tunnel out from your local machine and provides an `https` url.  In my experience this is one of the simplest ways to run a publicly accessible `https` secured webserver on your local machine. 
+If you want to test with multiple devices you'll need a way to run the project with a secure `https` connection. You have two options: set up a custom SSL certificate for your local device; or use a service like [ngrok](https://ngrok.com), which creates a tunnel out from your local machine and provides an `https` url.  In my experience, this is one of the simplest ways to run a publicly accessible `https` secured webserver on your local machine. 
 
 ## Fin. 
 And just like that we are done!
 
-By following this guide, you've set up a simple signaling web app using the Agora Signaling Web SDK and Vite. You've learned how to manage user presence and messaging in real-time, dynamically updating the UI based on user interactions. This foundational setup can be extended to build more complex real-time applications, enhancing user engagement with features like live chat, notifications, and interactive user experiences. With Agora’s robust SDK and the simplicity of Vite, you're well-equipped to create scalable and responsive real-time applications. Happy coding!
+By following this guide, you've set up a simple signaling web app using the Agora Signaling Web SDK and Vite. You've learned how to manage user presence and messaging in real time, dynamically updating the UI based on user interactions. This foundational setup can be extended to build more complex real-time applications, enhancing user engagement with features like live chat, notifications, and interactive user experiences. With Agora’s robust SDK and the simplicity of Vite, you're well-equipped to create scalable and responsive real-time applications. Happy coding!
 
 If you would like to see the demo in action, check out the [demo of the code in action](https://digitallysavvy.github.io/agora-signaling-demo/) on GitHub Pages 
 
