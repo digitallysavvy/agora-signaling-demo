@@ -1,7 +1,7 @@
 # Agora Real-Time Signaling
-In this guide we'll walk through how to build a simple signaling web app, using the Agora Signaling Web SDK, demostrating how to implement messaging channel features.
+In this guide, we'll walk through how to build a simple signaling web app using the Agora Signaling Web SDK, demonstrating how to implement messaging channel features.
 
-Given today’s fragmented JS landscape, this tutorial is HTML, CSS, and vanilla JS. In this guide we will be using Vite for the dev environment.
+Given today’s fragmented JS landscape, this tutorial uses HTML, CSS, and vanilla JS. We'll use Vite for the development environment.
 
 ## Pre Requisites 
 - [Node.JS](https://nodejs.org)
@@ -11,24 +11,25 @@ Given today’s fragmented JS landscape, this tutorial is HTML, CSS, and vanilla
 
 ## Setup Dev Environment
 
-We are going to use Vite to handle the dev environment. Open the terminal, navigate to your dev folder, and use NPM to create our project.
+We are going to use Vite to handle the development environment. Open the terminal, navigate to your development folder, and use NPM to create our project.
 
 ```bash
 npm create vite@latest
 ```
 
-Follow the Vite instructions: give your project a name `real-time-signaling-demo`, select `Vanilla` as the framework, and select `javascript` as the variant and hit enter. 
+Follow the Vite instructions: give your project a name real-time-signaling-demo, select Vanilla as the framework, and select javascript as the variant and hit enter.
 
 Once the project is set up, open the project folder in your code editor.
 
 ### Install the Agora Signaling SDK
-With the new project setup, open the project folder in the terminal and use `npm` to install the Agora Signaling Web SDK.
+With the new project set up, open the project folder in the terminal and use `npm `to install the Agora Signaling Web SDK.
+
 ```bash
 npm i agora-rtm-sdk
 ```
 
 ## How It Works
-This web-app will demonstrate the presence and messaging features of the Agora signaling SDK. When users load the page they will click a button to "Join", this will initilize the Agora RTM SDK and join the Agora RTM Channel. Once in the channel divs will be used to represent each user, as users join the channel new divs will be added to the container. Users in the channel will be able to interact with each other by clicking on individual divs or tapping the space bar to trigger animations that everyone else in the channel can see.
+This web app will demonstrate the presence and messaging features of the Agora Signaling SDK. When users load the page, they will click a button to "Join", initializing the Agora RTM SDK and joining the Agora RTM Channel. Once in the channel, `<div />` elements will be used to represent each user. As users join the channel, new `<div />` elements will be added to the container. Users in the channel will be able to interact with each other by clicking on individual `<div />` elements or tapping the space bar to trigger animations that everyone else in the channel can see.
 
 ### Core Structure (HTML) 
 Let’s start by laying out our basic html structure. Open the [`index.html`](index.html) file and replace it with the code below.
@@ -52,10 +53,10 @@ Let’s start by laying out our basic html structure. Open the [`index.html`](in
 </html>
 ```
 
-The structure is minimalistic, the body contains two main elements, the default `<app />`  and a `<container />` that we will use to add/remove `<div />`'s as users join and leave the channel. Then we load two javascript files, [`ui.js`](ui.js) that will contain all the functions for manipulating the UI, and [`agora-signaling.js`](agora-signaling.js) which focuses on the implimentation of the Agora Signaling SDK.
+The structure is minimalistic. The body contains two main elements: the default `<app />` and a `<container />` that we'll use to add/remove `<div />` elements as users join and leave the channel. Then we load two JavaScript files, [`ui.js`](ui.js)which will contain all the functions for manipulating the UI, and [`agora-signaling.js`](agora-signaling.js) which focuses on the implementation of the Agora Signaling SDK.
 
 ### Adding in CSS
-Now that we have our html set up, we need to add our styles. Open the [`style.css`](style.css) file and add this CSS below the existing CSS.
+Now that we have our HTML set up, we need to add our styles. Open the [`style.css`](style.css) file and add this CSS below the existing CSS.
 
 ```CSS
 
@@ -130,10 +131,10 @@ body {
 
 ```
 
-The new CSS styles set the `#container` to 100% of the `view-width` and `view-height` and defines a class `.user` for all user `<div />`'s to share. The new styles also contain a two classes for adding scaling and rotation animations to `<div/>` elements, and a class to fade a div to 25% opacity. 
+The new CSS styles set the `#container` to 100% of the `view-width` and `view-height` and defines a class `.user` for all user `<div />` elements to share. The new styles also contain two classes for adding scaling and rotation animations to `<div/>` elements and a class to fade a div to 25% opacity.
 
 ## UI.js
-Now that we have the HTML/DOM structure laid out, and have defined our styles we are ready to add in the JS. Create a new file [`ui.js`](ui.js) and the code below.
+Now that we have the HTML/DOM structure laid out and have defined our styles, we are ready to add in the JS. Create a new file [`ui.js`](ui.js) and add the code below.
 
 ```javascript
 import './style.css'
@@ -247,29 +248,29 @@ export const removeJoinButton = () => {
 }
 ```
 
-The [`ui.js`](ui.js) imports the `style.css`, defines functions for dynamically adding/removing `<div/>` elements and managing the container's grid layout, along with functions for adding the animation and fade classes. 
+The [`ui.js`](ui.js) imports the `style.css`, defines functions for dynamically adding/removing `<div/>` elements and managing the container's grid layout, along with functions for adding animation and fade classes. These functions collectively allow the app to provide a responsive and interactive experience for users in the Agora signaling channel.
 
 ## Agora Signaling
 
-The [Agora Signaling SDK](hhttps://www.agora.io/en/products/signaling/) simplifies the development process for building scalable real-time signaling applications. Agora Signaling SDK is pretty straight forward in how it works: you initialize the SDK by creating a `client`, use that client to `subscribe` to a `channel`. Once in a `channel` use the `client` to publish messages into the channel, for all other users in the channel to receive. 
+The [Agora Signaling SDK](hhttps://www.agora.io/en/products/signaling/) simplifies the development process for building real-time signaling solutions that scale with your web applications. The Agora Signaling SDK is straightforward in how it works: you initialize the SDK by creating a `client`, use that client to `subscribe` to a `channel`. Once in a `channel` use the `client` to publish messages into the channel, for all other users in the channel to receive. 
 
 To implement the Agora Signaling SDK, create a new file [`agora-signaling.js`](agora-signaling.js) and import the `AgoraRTM` object from `agora-rtm-sdk`. Then we'll import each of the `exports` from [`ui.js`](ui.js). 
 
-First, set up a constant for your Agora App ID and load that value from the environment file. Next, define the configuration for your `client` using `rtmConfig`. Leave the `token` empty since we make a call to our token server to get a fresh token once the page loads. 
+First, set up a constant for your Agora App ID and load that value from the environment file. Next, define the configuration for your `client` using `rtmConfig`. Leave the `token` empty since we make a call to our token server to get a fresh token once the page loads.
 
-Speaking of once the page loads, the majority our logic will happen onces the page loads, so we'll add an event listener for `DOMContentLoaded`, and designate the callback function as `async` so we can `await` promises and ui updates as needed. 
+Since the majority of our logic will happen once the page loads, we'll add an event listener for `DOMContentLoaded` and add the core logic in the callback. We'll designate the callback function as `async` so we can `await` promises and UI updates as needed.
 
-One of the first things we do is generate the a unique Id for users. The Agora Signaling SDK usage is based on active unique user id's per month, so we want to make sure each user has a persistent unique id and aovid creating a new id everytime the use loads the page. For more details on this see [`GeneratingUniqueIDs.md`](GeneratingUniqueIDs.md). 
+One of the first things we do is generate a unique ID for users. The Agora Signaling SDK usage is based on active unique user IDs per month, so we want to make sure each user has a persistent unique ID and avoid creating a new ID every time the user loads the page. For more details on this, see [`GeneratingUniqueIDs.md`](GeneratingUniqueIDs.md).
 
-Once we have a unique ID, we can fetch a token for that uid, update the `rtmConfig` and initialize the Agora Signaling SDK by creating a new `client`. Before we login or subscribe to any channel's we'll add the appropriate event listeners to the `client`. These listners will get called based on events from all the channels joined. Each event will provide details such as the channel type, channel name, publsher, and other relavent details based on the event type. 
+Once we have a unique `userId`, we can fetch a token for that UID, update the `rtmConfig`, and initialize the Agora Signaling SDK by creating a new `client` using the `appID`, `userId`, and `rtmConfig`. Before we log in or subscribe to any channels, we'll add the appropriate event listeners to the `client`. These listeners will be called based on events from all the channels joined. Each event will provide details such as the channel type, channel name, publisher, and other relevant details based on the event type.
 
-> For more information about the event details see the [Event Listeners section of Agora Signaling API documentation](https://docs.agora.io/en/signaling/reference/api?platform=web#event-listeners).
+> For more information about the event details, see the [Event Listeners section of the Agora Signaling API documentation](https://docs.agora.io/en/signaling/reference/api?platform=web#event-listeners).
 
-After we've added the listerns we can use the `client` to connect to the Agora network using `login()`, once the client is logged in, we can add the 'Join' `<button />` element so users can subscribe to the channel. 
+After we've added the listeners, we can use the `client` to connect to the Agora network using `login()`. Once the client is logged in, we can add the 'Join' `<button />` element so users can subscribe to the channel.
 
-Once users join a channel, we'll remove the 'Join' `<button />` element and let the `presence` event callback we set earlier handle filling the container with the `<div/>` elments representing the users in the channel.
+Once users join a channel, we'll remove the 'Join' `<button />` element and let the `presence` event callback we set earlier handle filling the container with the `<div />` elements representing the users in the channel.
 
-We'll add some event listeners for clicking on divs and tapping the space bar. When the local user triggers either of those events we'll create a message and publish it to the channel using the `client`. When the other users in the channel receive the `message` event, we'll parse the `message` payload and update the ui to either wiggle a div or scale it using the functions from [`ui.js`](ui.js).
+We'll add some event listeners for clicking on divs and tapping the space bar. When the local user triggers either of those events, we'll create a message and publish it to the channel using the `client`. When the other users in the channel receive the `message` event, we'll parse the `message` payload and update the UI to either wiggle a div or scale it using the functions from [`ui.js`](ui.js).
 
 We'll also include a listener for the `Escape` key, so users can `unsubscribe` from the channel. This will also clear the container and display the 'Join' `<button />`.
 
@@ -539,3 +540,20 @@ const renewToken = async (client, channelName) => {
 }
 
 ```
+## Testing 
+Since we are using Vite, testing locally is really easy, open the terminal at the project folder and run the command:
+
+```bash
+npm run dev
+```
+Once the server is running we can open multiple browsers and join the same channel to simulate multiple users in the channel and test out the code. 
+
+If you want to test with multiple devices you'll need a way to run the project with a secure `https` connection. You have two options: setup a custom SSL certificate for your local device; or use a service like [ngrok](https://ngrok.com), which creates a tunnel out from your local machine and provides an `https` url.  In my experience this is one of the simplest ways to run a publicly accessible `https` secured webserver on your local machine. 
+
+## Fin. 
+And just like that we are done!
+
+By following this guide, you've set up a simple signaling web app using the Agora Signaling Web SDK and Vite. You've learned how to manage user presence and messaging in real-time, dynamically updating the UI based on user interactions. This foundational setup can be extended to build more complex real-time applications, enhancing user engagement with features like live chat, notifications, and interactive user experiences. With Agora’s robust SDK and the simplicity of Vite, you're well-equipped to create scalable and responsive real-time applications. Happy coding!
+
+If you would like to see the demo in action, check out the [demo of the code in action](https://digitallysavvy.github.io/agora-signaling-demo/) on GitHub Pages 
+
