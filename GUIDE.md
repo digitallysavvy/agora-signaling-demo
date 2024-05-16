@@ -29,7 +29,7 @@ npm i agora-rtm-sdk
 ```
 
 ## How It Works
-This web app will demonstrate the presence and messaging features of the Agora Signaling SDK. When users load the page, they will click a button to "Join", initializing the Agora RTM SDK and joining the Agora RTM Channel. Once in the channel, `<div />` elements will be used to represent each user. As users join the channel, new `<div />` elements will be added to the container. Users in the channel will be able to interact with each other by clicking on individual `<div />` elements or tapping the space bar to trigger animations that everyone else in the channel can see.
+This web app will demonstrate the presence and messaging features of the Agora Signaling SDK. When users load the page, they will click a button to "Join", initializing the Agora RTM SDK and joining the Agora RTM Channel. Once in the channel, `<div/>` elements will be used to represent each user. As users join the channel, new `<div/>` elements will be added to the container. Users in the channel will be able to interact with each other by clicking on individual `<div/>` elements or tapping the space bar to trigger animations that everyone else in the channel can see.
 
 ### Core Structure (HTML) 
 Let’s start by laying out our basic html structure. Open the [`index.html`](index.html) file and replace it with the code below.
@@ -38,9 +38,9 @@ Let’s start by laying out our basic html structure. Open the [`index.html`](in
 <!doctype html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8"/>
+    <link rel="icon" type="image/svg+xml" href="/vite.svg"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Real-Time Signaling using Agora</title>
   </head>
   <body>
@@ -53,7 +53,7 @@ Let’s start by laying out our basic html structure. Open the [`index.html`](in
 </html>
 ```
 
-The structure is minimalistic. The body contains two main elements: the default `<app />` and a `<container />` that we'll use to add/remove `<div />` elements as users join and leave the channel. Then we load two JavaScript files, [`ui.js`](ui.js)which will contain all the functions for manipulating the UI, and [`agora-signaling.js`](agora-signaling.js) which focuses on the implementation of the Agora Signaling SDK.
+The structure is minimalistic. The body contains two main elements: the default `<app/>` and a `<container/>` that we'll use to add/remove `<div/>` elements as users join and leave the channel. Then we load two JavaScript files, [`ui.js`](ui.js)which will contain all the functions for manipulating the UI, and [`agora-signaling.js`](agora-signaling.js) which focuses on the implementation of the Agora Signaling SDK.
 
 ### Adding in CSS
 Now that we have our HTML set up, we need to add our styles. Open the [`style.css`](style.css) file and add this CSS below the existing CSS.
@@ -131,7 +131,7 @@ body {
 
 ```
 
-The new CSS styles set the `#container` to 100% of the `view-width` and `view-height` and defines a class `.user` for all user `<div />` elements to share. The new styles also contain two classes for adding scaling and rotation animations to `<div/>` elements and a class to fade a div to 25% opacity.
+The new CSS styles set the `#container` to 100% of the `view-width` and `view-height` and defines a class `.user` for all user `<div/>` elements to share. The new styles also contain two classes for adding scaling and rotation animations to `<div/>` elements and a class to fade a div to 25% opacity.
 
 ## UI.js
 Now that we have the HTML/DOM structure laid out and have defined our styles, we are ready to add in the JS. Create a new file [`ui.js`](ui.js) and add the code below.
@@ -272,7 +272,7 @@ Once users join a channel, we'll remove the 'Join' `<button/>` element and let t
 
 We'll add some listeners  for user click and keyboard events. When the local user taps the space bar or clicks on a `<div/>`, we'll create a message and publish it to the channel using the `client`. When the other users in the channel receive the `message` event, we'll parse the `message` payload and update the UI to either wiggle a div or scale it using the functions from [`ui.js`](ui.js).
 
-We'll also include a listener for the `Escape` key, so users can `unsubscribe` from the channel. This will also clear the container and display the 'Join' `<button />`.
+We'll also include a listener for the `Escape` key, so users can `unsubscribe` from the channel. This will also clear the container and display the 'Join' `<button/>`.
 
 ```javascript
 import AgoraRTM from "agora-rtm-sdk"
@@ -365,7 +365,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   })
 })
 
-// add the <button /> and subscribe logic
+// add the <button/> and subscribe logic
 const addJoin = async (client,channelName) => {
   const joinBtn = await addJoinButton()
   joinBtn.addEventListener('click', async (event) => {
