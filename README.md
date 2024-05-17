@@ -1,12 +1,12 @@
 # agora-signaling-demo
-An example of how to implement that Agora Signaling SDK for Web v 2.9.1 using vanilla javascript
-
-A walk-through of the project setup and code: [GUIDE.md](GUIDE.md)
+The code in this repo demonstrates how to implement that Agora Signaling SDK for Web v 2.9.1 using vanilla javascript.  
+To walk-through the project setup and code: [View GUIDE.md](GUIDE.md)
 
 ## Demo
-![build deploy to pages workflow](https://github.com/digitallysavvy/agora-signaling-demo/actions/workflows/deploy-to-pages.yaml/badge.svg)
+![build deploy to pages workflow](https://github.com/digitallysavvy/agora-signaling-demo/actions/workflows/deploy-to-pages.yaml/badge.svg)  
+Ping the token server: [<< Send Ping >>](https://agora-token-server-caak.onrender.com/ping)  
+Once token server responds, test the build: [https://digitallysavvy.github.io/agora-signaling-demo/](https://digitallysavvy.github.io/agora-signaling-demo/)
 
-Test the build: [https://digitallysavvy.github.io/agora-signaling-demo/](https://digitallysavvy.github.io/agora-signaling-demo/)
 
 ## Setup
 1. Clone the repo
