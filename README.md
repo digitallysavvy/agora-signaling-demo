@@ -1,6 +1,6 @@
 # agora-signaling-demo
 The code in this repo demonstrates how to implement that Agora Signaling SDK for Web v 2.9.1 using vanilla javascript.  
-To walk-through the project setup and code: [View GUIDE.md](GUIDE.md)
+To walk-through the project setup and code: View [GUIDE.md](GUIDE.md)
 
 ## Demo
 ![build deploy to pages workflow](https://github.com/digitallysavvy/agora-signaling-demo/actions/workflows/deploy-to-pages.yaml/badge.svg)  
@@ -12,7 +12,7 @@ Once token server responds, test the build: [https://digitallysavvy.github.io/ag
 1. Clone the repo
 2. Copy `.env-example` file and rename to `.env`
 ```bash
-cp .env.example .env
+cp .env-example .env
 ```
 3. Set the APP_ID, and TOKEN_SERVER env variables in the .env file
 
